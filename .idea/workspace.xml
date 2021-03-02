@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SPLITTER_PROPORTION" value="0.5688" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="97e99dde-5076-46d0-93ee-75111a3070e5" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectId" id="1p9QGCyFurIRMWTG0FGFjZ7xlWk" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../SOFTWARES/dartdocs-gen-api/gen-dartdocs/dart-io" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="dart.settings" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/chat_app/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/chat_app/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="97e99dde-5076-46d0-93ee-75111a3070e5" name="Default Changelist" comment="" />
+      <created>1614592727799</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1614592727799</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="137" y="39" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1614593923042">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="137" y="39" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1614593923042" />
+    <state x="412" y="174" key="#com.intellij.ide.util.TreeFileChooserDialog" timestamp="1614593884333">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="412" y="174" key="#com.intellij.ide.util.TreeFileChooserDialog/0.0.1366.768@0.0.1366.768" timestamp="1614593884333" />
+    <state x="441" y="264" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1614594421150">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="441" y="264" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1366.768@0.0.1366.768" timestamp="1614594421150" />
+    <state x="100" y="100" width="1166" height="568" key="AVDManager" timestamp="1614689118144">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="100" y="100" width="1166" height="568" key="AVDManager/0.0.1366.768@0.0.1366.768" timestamp="1614689118144" />
+    <state x="502" y="130" key="AndroidProcessChooserDialog" timestamp="1614594061292">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="502" y="130" key="AndroidProcessChooserDialog/0.0.1366.768@0.0.1366.768" timestamp="1614594061292" />
+    <state x="463" y="139" key="FileChooserDialogImpl" timestamp="1614593823308">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="463" y="139" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1614593823308" />
+    <state x="184" y="29" key="SettingsEditor" timestamp="1614594478143">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="184" y="29" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1614594478143" />
+    <state x="339" y="174" key="run.anything.popup" timestamp="1614593335428">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="339" y="174" key="run.anything.popup/0.0.1366.768@0.0.1366.768" timestamp="1614593335428" />
+    <state x="346" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1614600624174">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="346" y="89" width="672" height="678" key="search.everywhere.popup/0.0.1366.768@0.0.1366.768" timestamp="1614600624174" />
+  </component>
+</project>
