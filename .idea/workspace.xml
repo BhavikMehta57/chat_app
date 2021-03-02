@@ -4,13 +4,17 @@
     <option name="SPLITTER_PROPORTION" value="0.5688" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97e99dde-5076-46d0-93ee-75111a3070e5" name="Default Changelist" comment="" />
+    <list default="true" id="97e99dde-5076-46d0-93ee-75111a3070e5" name="Default Changelist" comment="app" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1p9QGCyFurIRMWTG0FGFjZ7xlWk" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -19,7 +23,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../SOFTWARES/dartdocs-gen-api/gen-dartdocs/dart-io" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="dart.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
@@ -45,7 +49,19 @@
       <option name="presentableId" value="Default" />
       <updated>1614592727799</updated>
     </task>
+    <task id="LOCAL-00001" summary="app">
+      <created>1614691293527</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1614691293527</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="app" />
+    <option name="LAST_COMMIT_MESSAGE" value="app" />
   </component>
   <component name="WindowStateProjectService">
     <state x="137" y="39" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1614593923042">
@@ -68,10 +84,10 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="502" y="130" key="AndroidProcessChooserDialog/0.0.1366.768@0.0.1366.768" timestamp="1614594061292" />
-    <state x="463" y="139" key="FileChooserDialogImpl" timestamp="1614593823308">
+    <state x="463" y="139" key="FileChooserDialogImpl" timestamp="1614691256620">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="463" y="139" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1614593823308" />
+    <state x="463" y="139" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1614691256620" />
     <state x="184" y="29" key="SettingsEditor" timestamp="1614594478143">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
