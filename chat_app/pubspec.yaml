@@ -35,6 +35,7 @@ dependencies:
   cloud_firestore: ^0.13.5
   flutter_share:
   documents_picker:
+  http:
 
 dev_dependencies:
   flutter_test:
