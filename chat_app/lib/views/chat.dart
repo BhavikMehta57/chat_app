@@ -9,6 +9,8 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:documents_picker/documents_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Chat extends StatefulWidget {
   final String chatRoomId;
@@ -21,6 +23,7 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
 
+  File image;
   Stream<QuerySnapshot> chats;
   TextEditingController messageEditingController = new TextEditingController();
 
@@ -38,6 +41,14 @@ class _ChatState extends State<Chat> {
             }) : Container();
       },
     );
+  }
+
+  Future getimage() async {
+    var tempimage = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      image = tempimage;
+    });
   }
 
   shareFile() async {
@@ -119,6 +130,28 @@ class _ChatState extends State<Chat> {
                           child: Image.asset("assets/images/addfile.png",
                             height: 25, width: 25,)),
                     ),
+                    new GestureDetector(
+                      onTap: () {
+                        getimage();
+                      },
+                      child: new Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [
+                                    const Color(0x36FFFFFF),
+                                    const Color(0x0FFFFFFF)
+                                  ],
+                                  begin: FractionalOffset.topLeft,
+                                  end: FractionalOffset.bottomRight
+                              ),
+                              borderRadius: BorderRadius.circular(40)
+                          ),
+                          padding: EdgeInsets.all(12),
+                          child: new Image.asset("assets/images/addimage.png",
+                            height: 25, width: 25,)),
+                    ),
                     Expanded(
                         child: TextField(
                           controller: messageEditingController,
@@ -166,6 +199,7 @@ class _ChatState extends State<Chat> {
   }
 
 }
+
 
 class MessageTile extends StatelessWidget {
   final String message;
