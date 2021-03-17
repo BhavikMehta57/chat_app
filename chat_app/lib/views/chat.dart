@@ -128,7 +128,7 @@ class _ChatState extends State<Chat> {
                           ),
                           padding: EdgeInsets.all(12),
                           child: Image.asset("assets/images/addfile.png",
-                            height: 25, width: 25,)),
+                            height: 50, width: 50,)),
                     ),
                     new GestureDetector(
                       onTap: () {
@@ -150,7 +150,7 @@ class _ChatState extends State<Chat> {
                           ),
                           padding: EdgeInsets.all(12),
                           child: new Image.asset("assets/images/addimage.png",
-                            height: 25, width: 25,)),
+                            height: 50, width: 50,)),
                     ),
                     Expanded(
                         child: TextField(
@@ -159,7 +159,7 @@ class _ChatState extends State<Chat> {
                           decoration: InputDecoration(
                               hintText: "Message ...",
                               hintStyle: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 16,
                               ),
                               border: InputBorder.none
@@ -186,7 +186,7 @@ class _ChatState extends State<Chat> {
                           ),
                           padding: EdgeInsets.all(12),
                           child: new Image.asset("assets/images/send.png",
-                            height: 25, width: 25,)),
+                            height: 50, width: 50,)),
                     ),
                   ],
                 ),

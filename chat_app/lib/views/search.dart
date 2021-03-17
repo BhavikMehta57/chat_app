@@ -81,14 +81,14 @@ class _SearchState extends State<Search> {
               Text(
                 userName,
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 16
                 ),
               ),
               Text(
                 userEmail,
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 16
                 ),
               )
@@ -107,7 +107,7 @@ class _SearchState extends State<Search> {
               ),
               child: Text("Message",
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 16
                 ),),
             ),
@@ -156,7 +156,7 @@ class _SearchState extends State<Search> {
                       decoration: InputDecoration(
                         hintText: "search username ...",
                         hintStyle: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black26,
                           fontSize: 16,
                         ),
                         border: InputBorder.none

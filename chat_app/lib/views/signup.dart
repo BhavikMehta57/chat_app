@@ -143,7 +143,7 @@ class _SignUpState extends State<SignUp> {
                   child: Text(
                     "SignIn now",
                     style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 16,
                         decoration: TextDecoration.underline),
                   ),
