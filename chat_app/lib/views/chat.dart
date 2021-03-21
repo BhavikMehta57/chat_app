@@ -11,19 +11,26 @@ import 'package:flutter_share/flutter_share.dart';
 import 'package:documents_picker/documents_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as Path;
 
 class Chat extends StatefulWidget {
+
   final String chatRoomId;
+  File _image;
+  String _uploadedimageurl;
 
   Chat({this.chatRoomId});
 
   @override
   _ChatState createState() => _ChatState();
+
 }
 
 class _ChatState extends State<Chat> {
 
-  File image;
+  File _image;
+  String _uploadedimageurl;
+
   Stream<QuerySnapshot> chats;
   TextEditingController messageEditingController = new TextEditingController();
 
@@ -44,11 +51,40 @@ class _ChatState extends State<Chat> {
   }
 
   Future getimage() async {
-    var tempimage = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      image = tempimage;
+    await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
+      setState(() {
+        _image = image;
+      });
     });
+    if(_image != null)
+      {
+        uploadimage();
+      }
+  }
+
+  Future uploadimage() async {
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('chats/${Path.basename(_image.path)}}');
+    StorageUploadTask uploadTask = storageReference.putFile(_image);
+    await uploadTask.onComplete;
+    print('Image Uploaded');
+    storageReference.getDownloadURL().then((fileURL) {
+      setState(() {
+        _uploadedimageurl = fileURL;
+      });
+    });
+    Map<String, dynamic> chatMessageMap = {
+      "sendBy": Constants.myName,
+      "message": _uploadedimageurl,
+      'time': DateTime
+          .now()
+          .millisecondsSinceEpoch,
+    };
+
+    DatabaseMethods().addMessage(widget.chatRoomId, chatMessageMap);
+
+
   }
 
   shareFile() async {
