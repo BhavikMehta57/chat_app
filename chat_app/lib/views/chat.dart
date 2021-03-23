@@ -129,7 +129,15 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain(context),
+      appBar: AppBar(
+        title: Text(widget.chatRoomId),
+        leading: Image.asset(
+          "assets/images/logo.png",
+          height: 40,
+        ),
+        elevation: 0.0,
+        centerTitle: false,
+      ),
       body: Container(
         child: Stack(
           children: [
@@ -245,7 +253,7 @@ class MessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(message.startsWith('https://'))
+    if(message.startsWith('https://firebasestorage'))
     {
       return Container(
         padding: EdgeInsets.only(

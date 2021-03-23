@@ -59,7 +59,8 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset(
+        title: Text("CHATAPP"),
+        leading: Image.asset(
           "assets/images/logo.png",
           height: 40,
         ),
