@@ -350,8 +350,8 @@ class MessageTile extends StatelessWidget {
                   const Color(0xff2A75BC)
                 ]
                     : [
-                  const Color(0x1AFFFFFF),
-                  const Color(0x1AFFFFFF)
+                  const Color(0xff007EF4),
+                  const Color(0xff2A75BC)
                 ],
               )
           ),
