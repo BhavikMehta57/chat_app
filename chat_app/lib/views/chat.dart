@@ -12,12 +12,19 @@ import 'package:documents_picker/documents_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as Path;
+import 'package:http/http.dart' as http;
+import 'package:file_picker/file_picker.dart';
 
 class Chat extends StatefulWidget {
 
   final String chatRoomId;
   File _image;
+  FileType _picktype = FileType.any;
   String _uploadedimageurl;
+  String _path;
+  String _extension;
+  GlobalKey <ScaffoldState> _scaffoldkey = GlobalKey();
+  List <StorageUploadTask> _tasks = <StorageUploadTask>[];
 
   Chat({this.chatRoomId});
 
@@ -29,7 +36,12 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
 
   File _image;
+  FileType _picktype = FileType.any;
   String _uploadedimageurl;
+  String _path;
+  String _extension;
+  GlobalKey <ScaffoldState> _scaffoldkey = GlobalKey();
+  List <StorageUploadTask> _tasks = <StorageUploadTask>[];
 
   Stream<QuerySnapshot> chats;
   TextEditingController messageEditingController = new TextEditingController();
@@ -65,7 +77,7 @@ class _ChatState extends State<Chat> {
   Future uploadimage() async {
     StorageReference storageReference = FirebaseStorage.instance
         .ref()
-        .child('chats/${Path.basename(_image.path)}}');
+        .child('chats/${widget.chatRoomId}/${Path.basename(_image.path)}');
     StorageUploadTask uploadTask = storageReference.putFile(_image);
     await uploadTask.onComplete;
     print('Image Uploaded');
@@ -87,14 +99,45 @@ class _ChatState extends State<Chat> {
 
   }
 
-  shareFile() async {
-    List<dynamic> docs = await DocumentsPicker.pickDocuments;
-    if (docs == null || docs.isEmpty) return null;
-    await FlutterShare.shareFile(
-      title: 'share',
-      text: 'share text',
-      filePath: docs[0] as String,
-    );
+  openfileexplorer () async {
+    try{
+      _path = await FilePicker.getFilePath(type: _picktype);
+      uploadToFirebase();
+    } on PlatformException catch (e) {
+      print('Unsupported Operation '+e.toString());
+    }
+    if(!mounted) {
+      return;
+    }
+  }
+
+  uploadToFirebase() {
+    String fileName = _path.split('/').last;
+    String filePath = _path;
+    upload(fileName, filePath);
+  }
+
+  upload(fileName, filePath) {
+    _extension = fileName.toString().split('.').last;
+    StorageReference storageReference = FirebaseStorage.instance.ref().child('files/${widget.chatRoomId}/$fileName');
+    final StorageUploadTask uploadTask =
+        storageReference.putFile(File(filePath),
+        StorageMetadata(
+          contentType: '$_picktype/$_extension',
+        ));
+    setState((){
+      _tasks.add(uploadTask);
+    });
+    Map<String, dynamic> chatMessageMap = {
+      "sendBy": Constants.myName,
+      "message": filePath,
+      'time': DateTime
+          .now()
+          .millisecondsSinceEpoch,
+    };
+
+    DatabaseMethods().addMessage(widget.chatRoomId, chatMessageMap);
+
 
   }
 
@@ -129,6 +172,7 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldkey,
       appBar: AppBar(
         title: Text(widget.chatRoomId),
         leading: Image.asset(
@@ -154,7 +198,7 @@ class _ChatState extends State<Chat> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        shareFile();
+                        openfileexplorer();
                       },
                       child: Container(
                           height: 40,
@@ -241,7 +285,6 @@ class _ChatState extends State<Chat> {
       ),
     );
   }
-
 }
 
 
@@ -250,10 +293,17 @@ class MessageTile extends StatelessWidget {
   final bool sendByMe;
   MessageTile({@required this.message, @required this.sendByMe});
 
-
   @override
   Widget build(BuildContext context) {
-    if(message.startsWith('https://firebasestorage'))
+    if (message == null)
+    {
+      return Container();
+    }
+    else if(message.startsWith('/data/user/0/com.example.chat_app/cache/file_picker'))
+    {
+      return Container();
+    }
+    else if(message.startsWith('https://firebasestorage.googleapis.com/v0/b/flutterchatapp-77c15.appspot.com/o/chats'))
     {
       return Container(
         padding: EdgeInsets.only(
