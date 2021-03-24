@@ -22,6 +22,7 @@ class Chat extends StatefulWidget {
   FileType _picktype = FileType.any;
   String _uploadedimageurl;
   String _path;
+  String filelocation;
   String _extension;
   GlobalKey <ScaffoldState> _scaffoldkey = GlobalKey();
   List <StorageUploadTask> _tasks = <StorageUploadTask>[];
@@ -39,6 +40,7 @@ class _ChatState extends State<Chat> {
   FileType _picktype = FileType.any;
   String _uploadedimageurl;
   String _path;
+  String filelocation;
   String _extension;
   GlobalKey <ScaffoldState> _scaffoldkey = GlobalKey();
   List <StorageUploadTask> _tasks = <StorageUploadTask>[];
@@ -125,12 +127,18 @@ class _ChatState extends State<Chat> {
         StorageMetadata(
           contentType: '$_picktype/$_extension',
         ));
+    storageReference.getDownloadURL().then((fileURI){
+      setState(() {
+        filelocation = fileURI;
+      });
+    });
+    print(filelocation);
     setState((){
       _tasks.add(uploadTask);
     });
     Map<String, dynamic> chatMessageMap = {
       "sendBy": Constants.myName,
-      "message": filePath,
+      "message": filelocation,
       'time': DateTime
           .now()
           .millisecondsSinceEpoch,
@@ -192,7 +200,7 @@ class _ChatState extends State<Chat> {
                   .size
                   .width,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 6),
                 color: Color(0x54FFFFFF),
                 child: Row(
                   children: [
@@ -214,7 +222,7 @@ class _ChatState extends State<Chat> {
                               ),
                               borderRadius: BorderRadius.circular(40)
                           ),
-                          padding: EdgeInsets.all(12),
+                          padding: EdgeInsets.all(6),
                           child: Image.asset("assets/images/addfile.png",
                             height: 50, width: 50,)),
                     ),
@@ -236,7 +244,7 @@ class _ChatState extends State<Chat> {
                               ),
                               borderRadius: BorderRadius.circular(40)
                           ),
-                          padding: EdgeInsets.all(12),
+                          padding: EdgeInsets.all(6),
                           child: new Image.asset("assets/images/addimage.png",
                             height: 50, width: 50,)),
                     ),
@@ -272,7 +280,7 @@ class _ChatState extends State<Chat> {
                               ),
                               borderRadius: BorderRadius.circular(40)
                           ),
-                          padding: EdgeInsets.all(12),
+                          padding: EdgeInsets.all(6),
                           child: new Image.asset("assets/images/send.png",
                             height: 50, width: 50,)),
                     ),
@@ -299,9 +307,51 @@ class MessageTile extends StatelessWidget {
     {
       return Container();
     }
-    else if(message.startsWith('/data/user/0/com.example.chat_app/cache/file_picker'))
+    else if(message.startsWith('https://firebasestorage.googleapis.com/v0/b/flutterchatapp-77c15.appspot.com/o/files'))
     {
-      return Container();
+      return Container(
+        padding: EdgeInsets.only(
+            top: 8,
+            bottom: 8,
+            left: sendByMe ? 0 : 24,
+            right: sendByMe ? 24 : 0),
+        alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
+        child: Container(
+          margin: sendByMe
+              ? EdgeInsets.only(left: 30)
+              : EdgeInsets.only(right: 30),
+          padding: EdgeInsets.only(
+              top: 17, bottom: 17, left: 20, right: 20),
+          decoration: BoxDecoration(
+              borderRadius: sendByMe ? BorderRadius.only(
+                  topLeft: Radius.circular(23),
+                  topRight: Radius.circular(23),
+                  bottomLeft: Radius.circular(23)
+              ) :
+              BorderRadius.only(
+                  topLeft: Radius.circular(23),
+                  topRight: Radius.circular(23),
+                  bottomRight: Radius.circular(23)),
+              gradient: LinearGradient(
+                colors: sendByMe ? [
+                  const Color(0xff007EF4),
+                  const Color(0xff2A75BC)
+                ]
+                    : [
+                  const Color(0xff007EF4),
+                  const Color(0xff2A75BC)
+                ],
+              )
+          ),
+          child: Text(message,
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontFamily: 'OverpassRegular',
+                  fontWeight: FontWeight.w300)),
+        ),
+      );
     }
     else if(message.startsWith('https://firebasestorage.googleapis.com/v0/b/flutterchatapp-77c15.appspot.com/o/chats'))
     {
