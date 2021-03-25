@@ -62,7 +62,15 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain(context),
+      appBar: AppBar(
+        title: Text("CHATAPP"),
+        leading: Image.asset(
+          "assets/images/logo.png",
+          height: 40,
+        ),
+        elevation: 0.0,
+        centerTitle: false,
+      ),
       body: isLoading
           ? Container(
               child: Center(child: CircularProgressIndicator()),

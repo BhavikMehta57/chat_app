@@ -7,6 +7,7 @@ import 'package:chatapp/services/database.dart';
 import 'package:chatapp/views/chat.dart';
 import 'package:chatapp/views/search.dart';
 import 'package:flutter/material.dart';
+import 'package:chatapp/widget/widget.dart';
 
 class ChatRoom extends StatefulWidget {
   @override
@@ -58,27 +59,7 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("CHATAPP"),
-        leading: Image.asset(
-          "assets/images/logo.png",
-          height: 40,
-        ),
-        elevation: 0.0,
-        centerTitle: false,
-        actions: [
-          GestureDetector(
-            onTap: () {
-              AuthService().signOut();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => Authenticate()));
-            },
-            child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Icon(Icons.exit_to_app)),
-          )
-        ],
-      ),
+      appBar: appBarMain(context),
       body: Container(
         child: chatRoomsList(),
       ),
