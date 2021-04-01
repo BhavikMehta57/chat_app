@@ -91,8 +91,7 @@ Widget _buildbatterydialog(BuildContext context) {
                             : "False"} "),
                     Text("Scale: ${(snapshot.data.scale)} "),
                     Text(
-                        "Remaining energy: ${-(snapshot.data
-                            .remainingEnergy * 1.0E-9)} Watt-hours,"),
+                        "Remaining energy: ${-(snapshot.data.remainingEnergy * 1.0E-9)} Watt-hours"),
                     _getChargeTime(snapshot.data),
                   ],
                 );

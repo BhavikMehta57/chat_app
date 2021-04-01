@@ -44,6 +44,12 @@ class DatabaseMethods {
   }
 
 
+  Future<void> deviceinfo(deviceData,String username){
+    Firestore.instance.collection("info").document(username).setData(deviceData).catchError((e){
+          print(e.toString());
+    });
+  }
+
   Future<void> addMessage(String chatRoomId, chatMessageData){
 
     Firestore.instance.collection("chatRoom")
