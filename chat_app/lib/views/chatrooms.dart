@@ -13,11 +13,9 @@ import 'package:battery_info/model/android_battery_info.dart';
 import 'package:battery_info/enums/charging_status.dart';
 import 'package:battery_info/model/iso_battery_info.dart';
 import 'package:device_info/device_info.dart';
-import 'package:carrier_info_s/carrier_info_s.dart';
 import 'package:all_sensors/all_sensors.dart';
+import 'package:sim_info/sim_info.dart';
 import 'dart:async';
-import 'package:wifi_connection/WifiConnection.dart';
-import 'package:wifi_connection/WifiInfo.dart';
 
 DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
@@ -28,14 +26,6 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   Stream chatRooms;
-  CarrierData carrierInfo;
-  WifiInfo _wifiInfo = WifiInfo();
-  List<double> _accelerometerValues;
-  List<double> _userAccelerometerValues;
-  List<double> _gyroscopeValues;
-  bool _proximityValues = false;
-  List <StreamSubscription<dynamic>> _streamSubscriptions = <StreamSubscription<dynamic>>[];
-
 
   Widget chatRoomsList() {
     return StreamBuilder(
@@ -59,73 +49,22 @@ class _ChatRoomState extends State<ChatRoom> {
     );
   }
 
-  Future<void> initPlatformState() async {
-
-    WifiInfo wifiInfo;
-
-    wifiInfo = await WifiConnection.wifiInfo;
-
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _wifiInfo = wifiInfo;
-    });
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      carrierInfo = await CarrierInfo.all;
-      setState(() {});
-    } catch (e) {
-      print(e.toString());
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-  }
-
   deviceinfo() async {
-
-      final List<String> accelerometer =
-      _accelerometerValues?.map((double v) => v.toStringAsFixed(1))?.toList();
-      final List<String> gyroscope =
-      _gyroscopeValues?.map((double v) => v.toStringAsFixed(1))?.toList();
-      final List<String> userAccelerometer = _userAccelerometerValues
-          ?.map((double v) => v.toStringAsFixed(1))
-          ?.toList();
 
       Map<String, dynamic> deviceinfoMap = {
 
         "Username": Constants.myName,
 
-        "Accelerometer":'${accelerometer}',
-        "UserAccelerometer":'${userAccelerometer}',
-        "Gyroscope":'${gyroscope}',
-        "Proximity":'${_proximityValues}',
+        // "Accelerometer": _accelerometerValues,
+        // "UserAccelerometer":"${userAccelerometer}",
+        // "Gyroscope":"${gyroscope}",
+        // "Proximity":"${_proximityValues}",
 
-        "SSID":'${_wifiInfo.ssid}',
-        "BSSID": '${_wifiInfo.bssId}',
-        "IP": '${_wifiInfo.ipAddress}',
-        "MAC Address": '${_wifiInfo.macAddress}',
-        "Link Speed": '${_wifiInfo.linkSpeed}',
-        "Signal Strength": '${_wifiInfo.signalStrength}',
-        "Frequency": '${_wifiInfo.frequency}',
-        "Channel": '${_wifiInfo.channel}',
-        "Network Id": '${_wifiInfo.networkId}',
-        "IsHiddenSSID": '${_wifiInfo.isHiddenSSid}',
-        "Router IP": '${_wifiInfo.routerIp}',
-
-        "Carrier Allows VOIP": carrierInfo?.allowsVOIP,
-        "Carrier Name": carrierInfo?.carrierName,
-        "Carrier ISO Country Code": carrierInfo?.isoCountryCode,
-        "Carrier Mobile Country Code": carrierInfo?.mobileCountryCode,
-        "Carrier Mobile Network Operator": carrierInfo?.mobileNetworkOperator,
-        "Carrier Mobile Network Code": carrierInfo?.mobileNetworkCode,
-        "Carrier Network Generation": carrierInfo?.networkGeneration,
-        "Carrier Radio Type": carrierInfo?.radioType,
+        "Carrier Allows VOIP": "${(await SimInfo.getAllowsVOIP)}",
+        "Carrier Name": "${(await SimInfo.getCarrierName)}",
+        "Carrier ISO Country Code": "${(await SimInfo.getIsoCountryCode)}",
+        "Carrier Mobile Country Code": "${(await SimInfo.getMobileCountryCode)}",
+        "Carrier Mobile Network Code": "${(await SimInfo.getMobileNetworkCode)}",
 
         "Device Brand": "${(await deviceInfo.androidInfo).brand}",
         "Device Version": "${(await deviceInfo.androidInfo).version}",
@@ -162,46 +101,12 @@ class _ChatRoomState extends State<ChatRoom> {
 
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    for (StreamSubscription<dynamic> subscription in _streamSubscriptions) {
-      subscription.cancel();
-    }
-  }
 
   @override
   void initState() {
     getUserInfogetChats();
-    initPlatformState();
-
-    super.initState();
-    _streamSubscriptions
-        .add(accelerometerEvents.listen((AccelerometerEvent event) {
-      setState(() {
-        _accelerometerValues = <double>[event.x, event.y, event.z];
-      });
-    }));
-    _streamSubscriptions.add(gyroscopeEvents.listen((GyroscopeEvent event) {
-      setState(() {
-        _gyroscopeValues = <double>[event.x, event.y, event.z];
-      });
-    }));
-
-    _streamSubscriptions
-        .add(userAccelerometerEvents.listen((UserAccelerometerEvent event) {
-      setState(() {
-        _userAccelerometerValues = <double>[event.x, event.y, event.z];
-      });
-    }));
-    _streamSubscriptions
-        .add(proximityEvents.listen((ProximityEvent event) {
-      setState(() {
-        _proximityValues = event.getValue();
-      });
-    }));
-
     deviceinfo();
+    super.initState();
   }
 
   getUserInfogetChats() async {
@@ -209,8 +114,6 @@ class _ChatRoomState extends State<ChatRoom> {
     DatabaseMethods().getUserChats(Constants.myName).then((snapshots) {
       setState(() {
         chatRooms = snapshots;
-        print(
-            "we got the data + ${chatRooms.toString()} this is name  ${Constants.myName}");
       });
     });
   }

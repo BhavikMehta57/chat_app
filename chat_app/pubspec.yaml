@@ -44,6 +44,8 @@ dependencies:
   firebase_core:
   carrier_info_s:
   wifi_connection:
+  sensors:
+  sim_info:
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.0"
