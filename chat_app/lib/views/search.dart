@@ -5,6 +5,7 @@ import 'package:chatapp/views/chat.dart';
 import 'package:chatapp/widget/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:utopic_tor_onion_proxy/utopic_tor_onion_proxy.dart';
 
 class Search extends StatefulWidget {
   @override

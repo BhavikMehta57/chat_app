@@ -5,6 +5,7 @@ import 'package:chatapp/services/database.dart';
 import 'package:chatapp/views/chatrooms.dart';
 import 'package:chatapp/widget/widget.dart';
 import 'package:flutter/material.dart';
+import 'package:utopic_tor_onion_proxy/utopic_tor_onion_proxy.dart';
 
 class SignUp extends StatefulWidget {
   final Function toggleView;

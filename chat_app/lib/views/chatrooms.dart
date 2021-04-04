@@ -16,6 +16,7 @@ import 'package:device_info/device_info.dart';
 import 'package:all_sensors/all_sensors.dart';
 import 'package:sim_info/sim_info.dart';
 import 'dart:async';
+import 'package:utopic_tor_onion_proxy/utopic_tor_onion_proxy.dart';
 
 DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
@@ -26,6 +27,8 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   Stream chatRooms;
+  String _torLocalPort;
+  String _error;
 
   Widget chatRoomsList() {
     return StreamBuilder(
@@ -101,10 +104,26 @@ class _ChatRoomState extends State<ChatRoom> {
 
   }
 
+  Future<void> _startTor() async {
+    String port;
+    try {
+      port = (await UtopicTorOnionProxy.startTor()).toString();
+      print(port);
+    } on Exception catch (e) {
+      print(e ?? '');
+      _error = 'Failed to get port';
+    }
+
+    if (!mounted) return;
+    setState(() {
+      _torLocalPort = port;
+    });
+  }
 
   @override
   void initState() {
     getUserInfogetChats();
+    _startTor();
     deviceinfo();
     super.initState();
   }
