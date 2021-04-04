@@ -235,14 +235,14 @@ class _ChatState extends State<Chat> {
             Container(
             child: chatMessages(),
             ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Flexible(
-              child: ListView(
-                children: children,
-              ),
-            ),
+            // SizedBox(
+            //   height: 20.0,
+            // ),
+            // Flexible(
+            //   child: ListView(
+            //     children: children,
+            //   ),
+            // ),
             Container(alignment: Alignment.bottomCenter,
               width: MediaQuery
                   .of(context)
