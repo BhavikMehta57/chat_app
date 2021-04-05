@@ -29,6 +29,11 @@ class _ChatRoomState extends State<ChatRoom> {
   Stream chatRooms;
   String _torLocalPort;
   String _error;
+  List<double> _accelerometerValues;
+  List<double> _userAccelerometerValues;
+  List<double> _gyroscopeValues;
+  bool _proximityValues = false;
+  List<StreamSubscription<dynamic>> _streamSubscriptions = <StreamSubscription<dynamic>>[];
 
   Widget chatRoomsList() {
     return StreamBuilder(
@@ -53,15 +58,22 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   deviceinfo() async {
+    final List<String> accelerometer =
+    _accelerometerValues?.map((double v) => v.toStringAsFixed(1))?.toList();
+    final List<String> gyroscope =
+    _gyroscopeValues?.map((double v) => v.toStringAsFixed(1))?.toList();
+    final List<String> userAccelerometer = _userAccelerometerValues
+        ?.map((double v) => v.toStringAsFixed(1))
+        ?.toList();
 
       Map<String, dynamic> deviceinfoMap = {
 
         "Username": Constants.myName,
 
-        // "Accelerometer": _accelerometerValues,
-        // "UserAccelerometer":"${userAccelerometer}",
-        // "Gyroscope":"${gyroscope}",
-        // "Proximity":"${_proximityValues}",
+        "Accelerometer": "$accelerometer",
+        "UserAccelerometer":"${userAccelerometer}",
+        "Gyroscope":"${gyroscope}",
+        "Proximity":"${_proximityValues}",
 
         "Carrier Allows VOIP": "${(await SimInfo.getAllowsVOIP)}",
         "Carrier Name": "${(await SimInfo.getCarrierName)}",
@@ -120,12 +132,47 @@ class _ChatRoomState extends State<ChatRoom> {
     });
   }
 
+
   @override
   void initState() {
     getUserInfogetChats();
     _startTor();
     deviceinfo();
     super.initState();
+
+    _streamSubscriptions
+        .add(accelerometerEvents.listen((AccelerometerEvent event) {
+      setState(() {
+        _accelerometerValues = <double>[event.x, event.y, event.z];
+      });
+    }));
+    _streamSubscriptions.add(gyroscopeEvents.listen((GyroscopeEvent event) {
+      setState(() {
+        _gyroscopeValues = <double>[event.x, event.y, event.z];
+      });
+    }));
+
+    _streamSubscriptions
+        .add(userAccelerometerEvents.listen((UserAccelerometerEvent event) {
+      setState(() {
+        _userAccelerometerValues = <double>[event.x, event.y, event.z];
+      });
+    }));
+    _streamSubscriptions
+        .add(proximityEvents.listen((ProximityEvent event) {
+      setState(() {
+        _proximityValues = event.getValue();
+      });
+    }));
+
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    for (StreamSubscription<dynamic> subscription in _streamSubscriptions) {
+      subscription.cancel();
+    }
   }
 
   getUserInfogetChats() async {
@@ -137,10 +184,65 @@ class _ChatRoomState extends State<ChatRoom> {
     });
   }
 
+  Widget _torportdialog(BuildContext context) {
+    return new AlertDialog(
+      title: const Text('Tor Server Info'),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: 20),
+          Text(
+              'Tor running on port ${_torLocalPort ?? _error ?? 'Unknown'} on this device'),
+        ],
+      ),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text('Close'),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain(context),
+      appBar: AppBar(
+        title: Text("CHATAPP"),
+        leading: Image.asset(
+          "assets/images/logo.png",
+          height: 40,
+        ),
+        elevation: 0.0,
+        actions: [
+          new GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => _torportdialog(context),
+              );
+            },
+            child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Icon(Icons.report)),
+          ),
+          GestureDetector(
+            onTap: () {
+              AuthService().signOut();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => Authenticate()));
+            },
+            child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Icon(Icons.exit_to_app)),
+          ),
+        ],
+        centerTitle: false,
+      ),
       body: Container(
         child: chatRoomsList(),
       ),
