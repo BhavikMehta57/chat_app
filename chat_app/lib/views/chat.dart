@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:flutter_share/flutter_share.dart';
-import 'package:documents_picker/documents_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as Path;
@@ -16,6 +14,7 @@ import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'package:utopic_tor_onion_proxy/utopic_tor_onion_proxy.dart';
 import 'package:flutter_string_encryption/flutter_string_encryption.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Chat extends StatefulWidget {
 
@@ -45,7 +44,6 @@ class _ChatState extends State<Chat> {
   String filelocation;
   String _extension;
   GlobalKey <ScaffoldState> _scaffoldkey = GlobalKey();
-  List <StorageUploadTask> _tasks = <StorageUploadTask>[];
 
   var key = "null";
   String encryptedS,decryptedS;
@@ -140,20 +138,15 @@ class _ChatState extends State<Chat> {
       });
     });
     print(filelocation);
-    setState((){
-      _tasks.add(uploadTask);
-    });
-    // Map<String, dynamic> chatMessageMap = {
-    //   "sendBy": Constants.myName,
-    //   "message": filelocation,
-    //   'time': DateTime
-    //       .now()
-    //       .millisecondsSinceEpoch,
-    // };
-    //
-    // DatabaseMethods().addMessage(widget.chatRoomId, chatMessageMap);
+    Map<String, dynamic> chatMessageMap = {
+      "sendBy": Constants.myName,
+      "message": filelocation,
+      'time': DateTime
+          .now()
+          .millisecondsSinceEpoch,
+    };
 
-
+    DatabaseMethods().addMessage(widget.chatRoomId, chatMessageMap);
   }
 
   void Decrypt() async{
@@ -202,22 +195,8 @@ class _ChatState extends State<Chat> {
     super.initState();
   }
 
-  Future<void> downloadFile(StorageReference ref) async {
-    final String url = await ref.getDownloadURL();
-    final http.Response downloadData = await http.get(url);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = <Widget>[];
-    _tasks.forEach((StorageUploadTask task) {
-      final Widget tile = UploadTaskListTile(
-        task: task,
-        onDismissed: () => setState(() => _tasks.remove(task)),
-        onDownload: () => downloadFile(task.lastSnapshot.ref),
-      );
-      children.add(tile);
-    });
     return Scaffold(
       key: _scaffoldkey,
       appBar: AppBar(
@@ -235,14 +214,6 @@ class _ChatState extends State<Chat> {
             Container(
             child: chatMessages(),
             ),
-            // SizedBox(
-            //   height: 20.0,
-            // ),
-            // Flexible(
-            //   child: ListView(
-            //     children: children,
-            //   ),
-            // ),
             Container(alignment: Alignment.bottomCenter,
               width: MediaQuery
                   .of(context)
@@ -356,52 +327,55 @@ class MessageTile extends StatelessWidget {
     {
       return Container();
     }
-    // else if(message.startsWith('https://firebasestorage.googleapis.com/v0/b/flutterchatapp-77c15.appspot.com/o/files'))
-    // {
-    //   return Container(
-    //     padding: EdgeInsets.only(
-    //         top: 8,
-    //         bottom: 8,
-    //         left: sendByMe ? 0 : 24,
-    //         right: sendByMe ? 24 : 0),
-    //     alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
-    //     child: Container(
-    //       margin: sendByMe
-    //           ? EdgeInsets.only(left: 30)
-    //           : EdgeInsets.only(right: 30),
-    //       padding: EdgeInsets.only(
-    //           top: 17, bottom: 17, left: 20, right: 20),
-    //       decoration: BoxDecoration(
-    //           borderRadius: sendByMe ? BorderRadius.only(
-    //               topLeft: Radius.circular(23),
-    //               topRight: Radius.circular(23),
-    //               bottomLeft: Radius.circular(23)
-    //           ) :
-    //           BorderRadius.only(
-    //               topLeft: Radius.circular(23),
-    //               topRight: Radius.circular(23),
-    //               bottomRight: Radius.circular(23)),
-    //           gradient: LinearGradient(
-    //             colors: sendByMe ? [
-    //               const Color(0xff007EF4),
-    //               const Color(0xff2A75BC)
-    //             ]
-    //                 : [
-    //               const Color(0xff007EF4),
-    //               const Color(0xff2A75BC)
-    //             ],
-    //           )
-    //       ),
-    //       child: Text(message,
-    //           textAlign: TextAlign.start,
-    //           style: TextStyle(
-    //               color: Colors.white,
-    //               fontSize: 16,
-    //               fontFamily: 'OverpassRegular',
-    //               fontWeight: FontWeight.w300)),
-    //     ),
-    //   );
-    // }
+    else if(message.startsWith('https://firebasestorage.googleapis.com/v0/b/flutterchatapp-77c15.appspot.com/o/files'))
+    {
+      return Container(
+        padding: EdgeInsets.only(
+            top: 8,
+            bottom: 8,
+            left: sendByMe ? 0 : 24,
+            right: sendByMe ? 24 : 0),
+        alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
+        child: Container(
+          margin: sendByMe
+              ? EdgeInsets.only(left: 30)
+              : EdgeInsets.only(right: 30),
+          padding: EdgeInsets.only(
+              top: 17, bottom: 17, left: 20, right: 20),
+          decoration: BoxDecoration(
+              borderRadius: sendByMe ? BorderRadius.only(
+                  topLeft: Radius.circular(23),
+                  topRight: Radius.circular(23),
+                  bottomLeft: Radius.circular(23)
+              ) :
+              BorderRadius.only(
+                  topLeft: Radius.circular(23),
+                  topRight: Radius.circular(23),
+                  bottomRight: Radius.circular(23)),
+              gradient: LinearGradient(
+                colors: sendByMe ? [
+                  const Color(0xff007EF4),
+                  const Color(0xff2A75BC)
+                ]
+                    : [
+                  const Color(0xff007EF4),
+                  const Color(0xff2A75BC)
+                ],
+              )
+          ),
+          child: InkWell(
+            child: Text(message,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontFamily: 'OverpassRegular',
+                    fontWeight: FontWeight.w300)),
+            onTap: () => launch(message),
+        ),
+        ),
+      );
+    }
     else if(message.startsWith('https://firebasestorage.googleapis.com/v0/b/flutterchatapp-77c15.appspot.com/o/chats'))
     {
       return Container(
@@ -466,96 +440,3 @@ class MessageTile extends StatelessWidget {
     }
   }
 }
-
-
-class UploadTaskListTile extends StatelessWidget {
-  const UploadTaskListTile(
-      {Key key, this.task, this.onDismissed, this.onDownload})
-      : super(key: key);
-
-  final StorageUploadTask task;
-  final VoidCallback onDismissed;
-  final VoidCallback onDownload;
-
-  String get status {
-    String result;
-    if (task.isComplete) {
-      if (task.isSuccessful) {
-        result = 'Complete';
-      } else if (task.isCanceled) {
-        result = 'Canceled';
-      } else {
-        result = 'Failed ERROR: ${task.lastSnapshot.error}';
-      }
-    } else if (task.isInProgress) {
-      result = 'Uploading';
-    } else if (task.isPaused) {
-      result = 'Paused';
-    }
-    return result;
-  }
-
-  String _bytesTransferred(StorageTaskSnapshot snapshot) {
-    return '${snapshot.bytesTransferred}/${snapshot.totalByteCount}';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<StorageTaskEvent>(
-      stream: task.events,
-      builder: (BuildContext context,
-          AsyncSnapshot<StorageTaskEvent> asyncSnapshot) {
-        Widget subtitle;
-        if (asyncSnapshot.hasData) {
-          final StorageTaskEvent event = asyncSnapshot.data;
-          final StorageTaskSnapshot snapshot = event.snapshot;
-          subtitle = Text('$status: ${_bytesTransferred(snapshot)} bytes sent');
-        } else {
-          subtitle = const Text('Starting...');
-        }
-        return Dismissible(
-          key: Key(task.hashCode.toString()),
-          onDismissed: (_) => onDismissed(),
-          child: ListTile(
-            title: Text('Upload Task #${task.hashCode}'),
-            subtitle: subtitle,
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Offstage(
-                  offstage: !task.isInProgress,
-                  child: IconButton(
-                    icon: const Icon(Icons.pause),
-                    onPressed: () => task.pause(),
-                  ),
-                ),
-                Offstage(
-                  offstage: !task.isPaused,
-                  child: IconButton(
-                    icon: const Icon(Icons.file_upload),
-                    onPressed: () => task.resume(),
-                  ),
-                ),
-                Offstage(
-                  offstage: task.isComplete,
-                  child: IconButton(
-                    icon: const Icon(Icons.cancel),
-                    onPressed: () => task.cancel(),
-                  ),
-                ),
-                Offstage(
-                  offstage: !(task.isComplete && task.isSuccessful),
-                  child: IconButton(
-                    icon: const Icon(Icons.file_download),
-                    onPressed: onDownload,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-

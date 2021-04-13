@@ -27,6 +27,7 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   Stream chatRooms;
+  String port;
   String _torLocalPort;
   String _error;
   List<double> _accelerometerValues;
@@ -117,7 +118,6 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   Future<void> _startTor() async {
-    String port;
     try {
       port = (await UtopicTorOnionProxy.startTor()).toString();
       print(port);
@@ -185,6 +185,7 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   Widget _torportdialog(BuildContext context) {
+    print(port);
     return new AlertDialog(
       title: const Text('Tor Server Info'),
       content: new Column(
@@ -193,7 +194,7 @@ class _ChatRoomState extends State<ChatRoom> {
         children: <Widget>[
           SizedBox(height: 20),
           Text(
-              'Tor running on port ${_torLocalPort ?? _error ?? 'Unknown'} on this device'),
+              'Tor running on port ${port} on this device'),
         ],
       ),
       actions: <Widget>[

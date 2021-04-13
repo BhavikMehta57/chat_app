@@ -33,27 +33,27 @@ dependencies:
   shared_preferences: ^0.5.6+3
   random_string: ^2.0.1
   cloud_firestore: ^0.13.5
-  flutter_share:
-  documents_picker:
   http:
   image_picker:
   device_info:
   file_picker: ^1.1.1
   battery_info:
   all_sensors:
-  firebase_core:
-  carrier_info_s:
-  wifi_connection:
   sensors:
   sim_info:
   utopic_tor_onion_proxy: ^0.2.3
   flutter_string_encryption: ^0.3.1
+  url_launcher:
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.0"
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
