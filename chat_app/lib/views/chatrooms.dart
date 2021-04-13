@@ -17,6 +17,7 @@ import 'package:all_sensors/all_sensors.dart';
 import 'package:sim_info/sim_info.dart';
 import 'dart:async';
 import 'package:utopic_tor_onion_proxy/utopic_tor_onion_proxy.dart';
+import 'package:device_apps/device_apps.dart';
 
 DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
@@ -35,6 +36,7 @@ class _ChatRoomState extends State<ChatRoom> {
   List<double> _gyroscopeValues;
   bool _proximityValues = false;
   List<StreamSubscription<dynamic>> _streamSubscriptions = <StreamSubscription<dynamic>>[];
+
 
   Widget chatRoomsList() {
     return StreamBuilder(
@@ -67,9 +69,19 @@ class _ChatRoomState extends State<ChatRoom> {
         ?.map((double v) => v.toStringAsFixed(1))
         ?.toList();
 
-      Map<String, dynamic> deviceinfoMap = {
+    List<Application> apps = await DeviceApps.getInstalledApplications(onlyAppsWithLaunchIntent: true, includeSystemApps: true);
+
+    var installed_apps = List();
+
+    for (Application app in apps){
+      installed_apps.add(app.appName);
+    }
+
+    Map<String, dynamic> deviceinfoMap = {
 
         "Username": Constants.myName,
+
+        "Apps Installed":"$installed_apps",
 
         "Accelerometer": "$accelerometer",
         "UserAccelerometer":"${userAccelerometer}",
