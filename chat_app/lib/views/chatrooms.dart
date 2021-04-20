@@ -18,6 +18,7 @@ import 'package:sim_info/sim_info.dart';
 import 'dart:async';
 import 'package:utopic_tor_onion_proxy/utopic_tor_onion_proxy.dart';
 import 'package:device_apps/device_apps.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
@@ -36,6 +37,23 @@ class _ChatRoomState extends State<ChatRoom> {
   List<double> _gyroscopeValues;
   bool _proximityValues = false;
   List<StreamSubscription<dynamic>> _streamSubscriptions = <StreamSubscription<dynamic>>[];
+
+  FlutterLocalNotificationsPlugin localNotification;
+
+  Future<void> _shownotification() async {
+    var androidDetails = new AndroidNotificationDetails(
+      "channelID",
+      "Local Notification",
+      "Tor Status",
+      importance: Importance.high);
+    var iosDetails = new IOSNotificationDetails();
+    var generalNotificationDetails = new NotificationDetails(android: androidDetails, iOS: iosDetails);
+    await localNotification.show(0,"Tor Status",
+        "Tor Disconnected", generalNotificationDetails);
+
+
+
+  }
 
 
   Widget chatRoomsList() {
@@ -142,6 +160,7 @@ class _ChatRoomState extends State<ChatRoom> {
     setState(() {
       _torLocalPort = port;
     });
+
   }
 
 
@@ -176,6 +195,14 @@ class _ChatRoomState extends State<ChatRoom> {
         _proximityValues = event.getValue();
       });
     }));
+
+    var androidInitialize = new AndroidInitializationSettings('@mipmap/launcher_icon');
+
+    var iOSInitialize = new IOSInitializationSettings();
+    var initializationSettings = new InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
+
+    localNotification = new FlutterLocalNotificationsPlugin();
+    localNotification.initialize(initializationSettings);
 
   }
 
@@ -245,6 +272,7 @@ class _ChatRoomState extends State<ChatRoom> {
           ),
           GestureDetector(
             onTap: () {
+              _shownotification();
               AuthService().signOut();
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => Authenticate()));
