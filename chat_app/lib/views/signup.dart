@@ -135,9 +135,6 @@ class _SignUpState extends State<SignUp> {
             SizedBox(
               height: 16,
             ),
-            SizedBox(
-              height: 16,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

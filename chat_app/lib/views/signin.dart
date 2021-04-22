@@ -22,10 +22,31 @@ class _SignInState extends State<SignIn> {
   TextEditingController passwordEditingController = new TextEditingController();
 
   AuthService authService = new AuthService();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
 
   final formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
+
+  signInAnonymously() async {
+      await authService.signInAnonymously().then((result) async {
+        if(result != null){
+          var username = "anonymous";
+          Map<String,String> userDataMap = {
+            "userName" : "anonymous",
+          };
+
+          databaseMethods.addUserInfo(userDataMap);
+
+          HelperFunctions.saveUserLoggedInSharedPreference(true);
+          HelperFunctions.saveUserNameSharedPreference(username);
+
+          Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context) => ChatRoom()
+          ));
+        }
+      });
+  }
 
   signIn() async {
     if (formKey.currentState.validate()) {
@@ -132,14 +153,11 @@ class _SignInState extends State<SignIn> {
                           )),
                       width: MediaQuery.of(context).size.width,
                       child: Text(
-                        "Sign In",
+                        "Log In",
                         style: biggerTextStyle(),
                         textAlign: TextAlign.center,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 16,
                   ),
                   SizedBox(
                     height: 16,
@@ -166,7 +184,32 @@ class _SignInState extends State<SignIn> {
                     ],
                   ),
                   SizedBox(
-                    height: 50,
+                    height: 16,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      signInAnonymously();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          gradient: LinearGradient(
+                            colors: [
+                              const Color(0xff007EF4),
+                              const Color(0xff2A75BC)
+                            ],
+                          )),
+                      width: MediaQuery.of(context).size.width,
+                      child: Text(
+                        "Log In As Guest",
+                        style: biggerTextStyle(),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
                   )
                 ],
               ),

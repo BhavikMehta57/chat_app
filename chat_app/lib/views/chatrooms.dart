@@ -40,7 +40,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   FlutterLocalNotificationsPlugin localNotification;
 
-  Future<void> _shownotification() async {
+  Future<void> _torstopnotification() async {
     var androidDetails = new AndroidNotificationDetails(
       "channelID",
       "Local Notification",
@@ -50,9 +50,18 @@ class _ChatRoomState extends State<ChatRoom> {
     var generalNotificationDetails = new NotificationDetails(android: androidDetails, iOS: iosDetails);
     await localNotification.show(0,"Tor Status",
         "Tor Disconnected", generalNotificationDetails);
+  }
 
-
-
+  Future<void> _torstartnotification() async {
+    var androidDetails = new AndroidNotificationDetails(
+        "channelID",
+        "Local Notification",
+        "Tor Status",
+        importance: Importance.high);
+    var iosDetails = new IOSNotificationDetails();
+    var generalNotificationDetails = new NotificationDetails(android: androidDetails, iOS: iosDetails);
+    await localNotification.show(0,"Tor Status",
+        "Tor Connected on port: ${port}", generalNotificationDetails);
   }
 
 
@@ -161,6 +170,7 @@ class _ChatRoomState extends State<ChatRoom> {
       _torLocalPort = port;
     });
 
+    _torstartnotification();
   }
 
 
@@ -272,7 +282,7 @@ class _ChatRoomState extends State<ChatRoom> {
           ),
           GestureDetector(
             onTap: () {
-              _shownotification();
+              _torstopnotification();
               AuthService().signOut();
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => Authenticate()));
