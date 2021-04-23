@@ -7,6 +7,7 @@ import 'package:chatapp/views/forgot_password.dart';
 import 'package:chatapp/widget/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:username_gen/username_gen.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -31,9 +32,9 @@ class _SignInState extends State<SignIn> {
   signInAnonymously() async {
       await authService.signInAnonymously().then((result) async {
         if(result != null){
-          var username = "anonymous";
+          var username = UsernameGen.gen();
           Map<String,String> userDataMap = {
-            "userName" : "anonymous",
+            "userName" : username,
           };
 
           databaseMethods.addUserInfo(userDataMap);

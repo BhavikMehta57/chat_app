@@ -46,6 +46,7 @@ dependencies:
   url_launcher:
   device_apps:
   flutter_local_notifications:
+  username_gen: ^1.0.2
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.0"

@@ -87,7 +87,6 @@ class _ChatState extends State<Chat> {
         .child('chats/${widget.chatRoomId}/${Path.basename(_image.path)}');
     StorageUploadTask uploadTask = storageReference.putFile(_image);
     await uploadTask.onComplete;
-    print('Image Uploaded');
     storageReference.getDownloadURL().then((fileURL) {
       setState(() {
         _uploadedimageurl = fileURL;
@@ -153,7 +152,6 @@ class _ChatState extends State<Chat> {
     try{
       //here pass encrypted string and the key to decrypt it
       decryptedS = await cryptor.decrypt(encryptedS, key);
-      print(decryptedS);
     }on MacMismatchException{
     }
   }
@@ -165,7 +163,6 @@ class _ChatState extends State<Chat> {
     key = await cryptor.generateKeyFromPassword(password, salt);
     // here pass the password entered by user and the key
     encryptedS = await cryptor.encrypt(password, key);
-    print(encryptedS);
 
     if (messageEditingController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {

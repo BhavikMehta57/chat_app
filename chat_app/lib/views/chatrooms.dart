@@ -159,7 +159,6 @@ class _ChatRoomState extends State<ChatRoom> {
   Future<void> _startTor() async {
     try {
       port = (await UtopicTorOnionProxy.startTor()).toString();
-      print(port);
     } on Exception catch (e) {
       print(e ?? '');
       _error = 'Failed to get port';
@@ -262,7 +261,20 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("CHATAPP"),
+        title: RichText(
+          text: TextSpan(
+              text: "CHATAPP",
+              style: TextStyle(fontSize: 20),
+              children: <TextSpan>[
+                TextSpan(
+                  text: '\n${Constants.myName}',
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+              ]
+          ),
+        ),
         leading: Image.asset(
           "assets/images/logo.png",
           height: 40,
